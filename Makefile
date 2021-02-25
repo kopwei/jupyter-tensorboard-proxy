@@ -4,7 +4,7 @@
 # Use bash for inline if-statements in target
 SHELL:=bash
 TAG:=latest
-OWNER:=illumidesk
+OWNER:=kopwei
 VENV_NAME?=venv
 VENV_BIN=$(shell pwd)/${VENV_NAME}/bin
 VENV_ACTIVATE=. ${VENV_BIN}/activate
@@ -18,14 +18,14 @@ help:
 # credits:
 # http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 # http://github.com/jupyter/docker-stacks
-	@echo "illumidesk/jupyter-tensorboardproxy-proxy"
+	@echo "kopwei/jupyter-tensorboard-proxy"
 	@echo "====================="
 	@echo "Run one of the commands below with the 'make ...' command, i.e. 'make dev'."
 	@echo
 	@grep -E '^[a-zA-Z0-9_%/-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 build: ## build the latest image for a stack
-	${VENV_BIN}/jupyter-repo2docker --no-run --user-id 1000 --user-name jovyan --image-name $(OWNER)/tensorboardproxy:$(TAG) .
+	${VENV_BIN}/jupyter-repo2docker --no-run --user-id 1000 --user-name jovyan --image-name $(OWNER)/tensorboard:$(TAG) .
 
 clean-all: ## remove built images and running containers (including those w/ exit status)
 	@docker rm -f $(shell docker ps -aq)

@@ -41,7 +41,7 @@ def docker_client() -> docker.client:
 @pytest.fixture(scope="session")
 def image_name() -> str:
     """Image name to test"""
-    return os.getenv("TEST_IMAGE", "illumidesk/base-notebook")
+    return os.getenv("TEST_IMAGE", "kopwei/base-notebook")
 
 
 class TrackedContainer:

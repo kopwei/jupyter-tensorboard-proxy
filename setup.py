@@ -9,9 +9,9 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 
 setuptools.setup(
-    name="jupyter-tensorboardproxy-proxy",
+    name="jupyter-tensorboard-proxy",
     version='0.1.0',
-    url="https://github.com/kopwei/jupyter-tensorboardproxy-proxy",
+    url="https://github.com/kopwei/jupyter-tensorboard-proxy",
     author="kopkop",
     description="kopkop@gmail.com",
     long_description=long_description,
@@ -24,10 +24,10 @@ setuptools.setup(
     ],
     entry_points={
         'jupyter_serverproxy_servers': [
-            'tensorboardproxy = jupyter_tensorboardproxy_proxy:setup_tensorboardproxy',
+            'tensorboard = jupyter_tensorboard_proxy:setup_tensorboard',
         ]
     },
     package_data={
-        'jupyter_tensorboardproxy_proxy': ['icons/tensorboard.svg'],
+        'jupyter_tensorboard_proxy': ['icons/tensorboard.svg'],
     },
 )

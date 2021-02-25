@@ -13,18 +13,18 @@ LOGGER = logging.getLogger(__name__)
     "language,version_output",
     [
         (
-            "tensorboardproxy",
+            "tensorboard",
             [
-                "tensorboardproxy",
+                "tensorboard",
             ],
         ),
     ],
 )
-def test_tensorboardproxy_version(language, version_output):
-    """Ensure tensorboardproxy is available in the PATH and that it returns the correct version"""
+def test_tensorboard_version(language, version_output):
+    """Ensure tensorboard is available in the PATH and that it returns the correct version"""
     LOGGER.info(f"Test that language {language} is correctly installed ...")
     client = docker.from_env()
-    output = client.containers.run("illumidesk/tensorboardproxy:latest", f"{language} --version")
+    output = client.containers.run("kopwei/tensorboard:latest", f"{language} --version")
     output_decoded = output.decode("utf-8").split(" ")
     assert output_decoded[0:1].lower() == version_output
     LOGGER.info(f"Output from command: {output_decoded[0:3]}")
@@ -35,4 +35,4 @@ def test_invalid_cmd():
     with pytest.raises(ContainerError):
         LOGGER.info("Test an invalid command ...")
         client = docker.from_env()
-        client.containers.run("illumidesk/tensorboardproxy", "foo --version")
+        client.containers.run("kopwei/tensorboard", "foo --version")
