@@ -29,14 +29,15 @@ def setup_tensorboard():
             logger.info("Created directory %s" % working_dir)
         else:    
             logger.info("Directory %s already exists" % working_dir)
-        return ['tensorboard']
+        return ['tensorboard', '--logdir', '%s/logs' % home_dir, '--port', '{port}']
     
     return {
-        'command': '_get_tensorboard_command',
+        'command': _get_tensorboard_command,
+        'port': 6006,
         'timeout': 20,
         'new_browser_tab': True,
         'launcher_entry': {
-            'title': 'tensorboard',
+            'title': 'Tensorboard',
             'icon_path': _get_icon_path()
         },
     }
