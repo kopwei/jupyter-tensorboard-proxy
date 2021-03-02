@@ -35,13 +35,13 @@ source venv/bin/activate
 ## Deployment
 Here describes how to deploy tensorboad proxy.
 
-### Install jupyter-pgweb-proxy
+### Install jupyter-tensorboard-proxy
 
 ```bash
-pip install git+https://github.com/illumidesk/jupyter-pgweb-proxy.git
+pip install jupyter-tensorboard-proxy
 ```
 
-### Enable jupyter-pgweb-proxy Extensions
+### Enable jupyter-tensorboard-proxy Extensions
 
 1. For Jupyter Classic, activate the `jupyter-server-proxy` extension:
 
