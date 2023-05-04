@@ -22,7 +22,7 @@ def setup_tensorboard():
         if not executable:
             raise FileNotFoundError('Can not find tensorboard executable in $PATH')
         # Create theia working directory
-        home_dir = os.environ.get('HOME') or '/home/jovyan'
+        home_dir = os.environ.get('HOME') or "/home/%s" % os.environ.get('NB_USER') or '/home/jovyan'
         working_dir = f'{home_dir}'
         if not os.path.exists(working_dir):
             os.makedirs(working_dir)
