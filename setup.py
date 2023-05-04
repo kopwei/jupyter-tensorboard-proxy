@@ -21,6 +21,7 @@ setuptools.setup(
 	classifiers=['Framework :: Jupyter'],
     install_requires=[
         'jupyter-server-proxy>=1.5.0',
+        'python-dotenv>=1.0.0',
         'tensorboard>=2.4.1',
         'tensorflow-io>=0.32.0'
     ],
