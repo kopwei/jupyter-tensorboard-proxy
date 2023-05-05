@@ -19,15 +19,27 @@ def setup_tensorboard():
 
     # Make sure executable is in $PATH
     def _get_tensorboard_command(port):
+        """
+        Takes in port number and returns a tensorboard command like this:
+            `tensorboard --logdir {TF_LOG_DIR} --port {port}`
+        
+        TF_LOG_DIR and AWS/S3 credentials (if relevant) can be curated either:
+            - as environment variables, or
+            - in a file named ~/.tensorboard
+        
+        If TF_LOG_DIR is not provided, the logdir defaults to the $HOME/logs directory
+        
+        If TF_LOG_DIR is specified as an s3:// bucket, required variables in environment
+        or ~/.tensorboard include:
+        
+            - AWS_ACCESS_KEY_ID
+            - AWS_SECRET_ACCESS_KEY
+            - AWS_DEFAULT_REGION
+            - S3_ENDPOINT_URL (if not official AWS)
+        """
         executable = shutil.which('tensorboard')
         if not executable:
             raise FileNotFoundError('Can not find tensorboard executable in $PATH')
-
-        # NOTES: With the edits below, it will expect to find the TF_LOG_DIR variable
-        #   either already exported in the current shell session, or located in a ~/.tensorboard file
-        # In addition, if using s3 for the location, it will also expect to find these env vars in the same location, either as env vars or in ~/.tensorboard
-        #   AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION, S3_ENDPOINT_URL (if not official AWS)
-        #   If these vars are not found, errors will result from boto3 within tensorflow-io, so no error handling is needed here.
 
         # first look for --logdir override in the form of an s3 bucket or alternate path, then fall back to home_dir if not found
         if os.environ.get('TF_LOG_DIR'):
