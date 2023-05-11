@@ -1,3 +1,4 @@
+import re
 import os
 import shutil
 import logging
@@ -41,18 +42,21 @@ def setup_tensorboard():
         if not executable:
             raise FileNotFoundError('Can not find tensorboard executable in $PATH')
 
-        # first look for --logdir override in the form of an s3 bucket or alternate path, then fall back to home_dir if not found
+        # first check for --logdir override as TF_LOG_DIR environment variable
         if os.environ.get('TF_LOG_DIR'):
             TF_LOG_DIR = os.environ.get('TF_LOG_DIR')
-        # providing a second option to store this in a dot file, as env vars are context/session specific
+        # second check if it is in a specific file called $HOME/.tensorboard
         elif os.path.isfile("%s/.tensorboard" % os.environ.get('HOME')):
             load_dotenv("%s/.tensorboard" % os.environ.get('HOME'))
-            if not os.environ.get('TF_LOG_DIR'):
-                logger.error("If you wish to change the tensorflow/tensorboard TF_LOG_DIR via config file instead of env var, you must put 'TF_LOG_DIR=path' in the $HOME/.tensorboard file")
-            else:
-                TF_LOG_DIR = os.environ.get('TF_LOG_DIR')
+        # third check if it is in .bashrc and possibly just not sourced in the environment
+        # This will obviously only work on Linux/Unix because of the .bashrc and because of the bash os.system commands
+        # But since we're checking for the file's existence, it should also be safe for Windows. It would just skip
+        elif os.path.isfile("%s/.bashrc" % os.environ.get('HOME')) and os.system('cat $HOME/.bashrc | grep TF_LOG_DIR'):
+            os.system('cat $HOME/.bashrc | grep "^export" | grep -i "s3_\|aws_\|tf_" >| /tmp/.tensorboard')
+            load_dotenv("/tmp/.tensorboard")
+            os.system('rm -f /tmp/.tensorboard')
+        # As a last resort, use a local --logdir in the home directory
         else:
-            # Create working directory
             home_dir = os.environ.get('HOME') or "/home/%s" % os.environ.get('NB_USER') or '/home/jovyan'
             working_dir = f'{home_dir}'
             if not os.path.exists(working_dir):

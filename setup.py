@@ -10,7 +10,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setuptools.setup(
     name="jupyter-tensorboard-proxy",
-    version='0.2.0',
+    version='0.2.1',
     url="https://github.com/kopwei/jupyter-tensorboard-proxy",
     author="kopkop",
     description="kopkop@gmail.com",
